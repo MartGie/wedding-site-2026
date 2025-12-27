@@ -1,0 +1,192 @@
+:root{
+  --brand: #8B0808;
+  --bg: #FFFFFF;
+  --text: #111;
+}
+
+/* If you have Belinda as a font file, drop it into /fonts and uncomment.
+   Recommended filenames:
+   - fonts/Belinda.woff2
+   - fonts/Belinda.woff
+*/
+/*
+@font-face {
+  font-family: "Belinda";
+  src: url("fonts/Belinda.woff2") format("woff2"),
+       url("fonts/Belinda.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+*/
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Layout */
+.page{
+  min-height: 100%;
+  display: grid;
+  place-items: start center;
+  padding: 48px 20px 80px;
+}
+
+.hero{
+  width: min(920px, 100%);
+  text-align: center;
+  padding-top: 12px;
+}
+
+/* Typography */
+.km-header{
+  /* Belinda requested; fallback included */
+  font-family: "Belinda", "Allura", "Great Vibes", "Brush Script MT", cursive;
+  font-size: 68px;
+  line-height: 1.05;
+  color: var(--brand);
+  font-weight: 400;
+  margin: 12px 0 28px;
+}
+
+.big-script{
+  font-family: "Belinda", "Allura", "Great Vibes", "Brush Script MT", cursive;
+  font-size: 91px;
+  line-height: 1.02;
+  color: var(--brand);
+  font-weight: 400;
+  margin: 0 0 26px;
+}
+
+.names{
+  font-family: "Fahkwang", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin: 0 0 16px;
+}
+
+.invite{
+  font-family: "Belinda", "Allura", "Great Vibes", "Brush Script MT", cursive;
+  font-size: 20px;
+  color: var(--brand);
+  font-weight: 400;
+  margin: 0 0 22px;
+}
+
+.day,
+.date{
+  font-family: "American Typewriter", "Courier New", Courier, monospace;
+  font-size: 20px;
+  color: var(--brand);
+  margin: 0;
+}
+
+.day{ margin-bottom: 6px; }
+
+/* Responsive tweaks */
+@media (max-width: 520px){
+  .km-header{ font-size: 48px; }
+  .big-script{ font-size: 64px; }
+  .names{ font-size: 16px; }
+}
+
+.day-icon{
+  display: flex;
+  justify-content: center;
+  margin: 22px 0 12px;
+}
+
+.day-icon svg{
+  width: 48px;
+  height: 48px;
+  stroke: var(--brand);
+}
+.day-icon svg rect,
+.day-icon svg line{
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: draw 1.1s ease forwards;
+}
+
+@keyframes draw{
+  to { stroke-dashoffset: 0; }
+}
+
+/* Full-width moving strip behind the headline */
+.headline-strip{
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  margin: 0 0 26px;
+}
+
+/* make the strip full-bleed across the viewport */
+.headline-strip--full{
+  /* breaks out of the centered container and spans full width */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+}
+
+.strip{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Track: images touch each other, no gaps */
+.strip-track{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0;                 /* edges touch */
+  padding: 0;             /* no padding so it starts/ends at page edges */
+  opacity: 0.45;          /* adjust if needed for readability */
+  animation: strip-move 16s linear infinite;
+  will-change: transform;
+}
+
+/* Bigger square tiles */
+.strip-track img{
+  height: 220px;          /* bigger */
+  aspect-ratio: 1 / 1;    /* square */
+  width: auto;            /* width follows aspect ratio */
+  object-fit: cover;
+  display: block;
+  flex: 0 0 auto;
+  border-radius: 0;       /* so the strip is one continuous block */
+}
+
+/* Seamless loop using duplicated images */
+@keyframes strip-move{
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0%); }
+}
+
+/* Text on top */
+.big-script--overlay{
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  padding: 64px 20px;   /* creates strip height area + breathing room */
+  text-align: center;
+  text-shadow: 0 2px 12px rgba(255,255,255,0.75);
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px){
+  .strip-track img{ height: 160px; }
+  .big-script--overlay{ padding: 48px 16px; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .strip-track{ animation: none; }
+}
