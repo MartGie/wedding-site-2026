@@ -46,7 +46,7 @@ body {
 .km-header{
   /* Belinda requested; fallback included */
   font-family: "Belinda", "Allura", "Great Vibes", "Brush Script MT", cursive;
-  font-size: 68px;
+  font-size: 84px;
   line-height: 1.05;
   color: var(--brand);
   font-weight: 400;
@@ -55,7 +55,7 @@ body {
 
 .big-script{
   font-family: "Belinda", "Allura", "Great Vibes", "Brush Script MT", cursive;
-  font-size: 91px;
+  font-size: 106px;
   line-height: 1.02;
   color: var(--brand);
   font-weight: 400;
@@ -85,6 +85,13 @@ body {
   font-size: 20px;
   color: var(--brand);
   margin: 0;
+}
+
+.soon{
+  font-family: "American Typewriter", "Courier New", Courier, monospace;
+  font-size: 12px;
+  color: var(--brand);
+  margin: 20px;
 }
 
 .day{ margin-bottom: 6px; }
@@ -123,7 +130,7 @@ body {
   position: relative;
   isolation: isolate;
   width: 100%;
-  margin: 0 0 26px;
+  margin: 12px 0 50px;
 }
 
 /* make the strip full-bleed across the viewport */
@@ -137,37 +144,44 @@ body {
 .strip{
   position: absolute;
   inset: 0;
-  z-index: 0;
   overflow: hidden;
+  z-index: 0;
 }
 
-/* Track: images touch each other, no gaps */
+/* Key: width is max-content so the track width equals its content width */
 .strip-track{
-  height: 100%;
   display: flex;
-  align-items: center;
-  gap: 0;                 /* edges touch */
-  padding: 0;             /* no padding so it starts/ends at page edges */
-  opacity: 0.45;          /* adjust if needed for readability */
-  animation: strip-move 16s linear infinite;
+  gap: 0;                 /* no gaps */
+  padding: 0;             /* no padding */
+  width: max-content;     /* critical */
   will-change: transform;
+  transform: translate3d(0,0,0); /* reduce jitter */
+  animation: marquee 24s linear infinite;
 }
 
-/* Bigger square tiles */
+
 .strip-track img{
-  height: 220px;          /* bigger */
-  aspect-ratio: 1 / 1;    /* square */
-  width: auto;            /* width follows aspect ratio */
+  filter: grayscale(100%);
+}
+
+.strip-track img:hover{
+  filter: grayscale(0%);
+}
+
+
+/* Square tiles, edge-to-edge */
+.strip-track img{
+  height: clamp(180px, 24vw, 320px);
+  aspect-ratio: 1 / 1;
+  width: auto;
   object-fit: cover;
   display: block;
   flex: 0 0 auto;
-  border-radius: 0;       /* so the strip is one continuous block */
 }
 
-/* Seamless loop using duplicated images */
-@keyframes strip-move{
-  from { transform: translateX(-50%); }
-  to   { transform: translateX(0%); }
+@keyframes marquee{
+  from { transform: translate3d(-45%,0,0); }
+  to   { transform: translate3d(5%,0,0); }
 }
 
 /* Text on top */
@@ -175,7 +189,7 @@ body {
   position: relative;
   z-index: 2;
   margin: 0;
-  padding: 64px 20px;   /* creates strip height area + breathing room */
+  padding: 100px 20px;   /* creates strip height area + breathing room */
   text-align: center;
   text-shadow: 0 2px 12px rgba(255,255,255,0.75);
 }
